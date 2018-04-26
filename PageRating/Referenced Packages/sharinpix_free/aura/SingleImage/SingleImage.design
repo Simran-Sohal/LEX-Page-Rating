@@ -1,0 +1,10 @@
+<design:component label="Image">
+    <design:attribute name="attachmentId" label="Source" description="Enter an attachmentId, ContentVersionId or an image link" default=""/>
+    <design:attribute name="height" label="Height" description="Enter height of the container" default=""/>
+    <design:attribute name="urlField" label=" URL field" description="Enter the API name of the field containing the image url." default=""/>
+    <design:attribute name="linkText" label="Link" />
+    <design:attribute name="text" label="Text" />
+    <design:attribute name="verticalAlign" label="Vertical align" datasource="top, middle, bottom" default="middle"/>
+    <design:attribute name="textSize" label="Text size" datasource="small, medium, large" default="medium"/>
+    <design:attribute name="color" label="Color" datasource="red, blue, yellow, green, white, black" default="red"/>
+</design:component>

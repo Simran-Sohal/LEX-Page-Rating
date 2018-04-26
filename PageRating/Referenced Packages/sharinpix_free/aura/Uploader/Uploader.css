@@ -1,0 +1,92 @@
+.THIS label * {
+  pointer-events: none
+}
+
+.THIS {
+  display: inline-block;
+}
+
+.THIS.uploader-container label {
+  cursor: pointer;
+  background: rgb(216, 221, 230);
+  border-radius: 50%;
+  padding: 0.4rem ;
+  width: 36px;
+  height: 36px;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  display: block;
+}
+
+.THIS.uploader-container input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.THIS.uploader-container label span {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes progressgreen {
+  from { background: rgb(75, 202, 129); }
+  to { background: rgba(75, 202, 129, 0.5); }
+}
+
+.THIS.uploader-container .progress{
+  background: rgb(75, 202, 129);
+  animation-name: progressgreen;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+	position: absolute;
+	left: 0;
+  right: 0;
+	bottom: 0;
+  height: 0;
+  transition: height 5s ease-out;
+}
+
+.THIS uploader-container{
+  opacity: 0.6!important;
+}
+
+.THIS.file-native-upload span.slds-form-element__label {
+	display: none;
+}
+
+.THIS.file-native-upload label span.slds-file-selector__text {
+  display: none;
+}
+
+.THIS.file-native-upload label span.slds-file-selector__button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  max-height: none;
+  border: none;
+  background: rgb(216, 221, 230);
+}
+
+.THIS.file-native-upload label span lightning-primitive-icon {
+  position: relative;
+  left: -6px;
+  bottom: 2px;
+}
+
+.THIS.file-native-upload svg {
+  width: 1rem;
+  height: 1rem;
+  line-height: 1;
+  color: rgb(112, 110, 107);
+}
+
+.THIS.file-native-upload .slds-file-selector__dropzone {
+  border: none;
+}

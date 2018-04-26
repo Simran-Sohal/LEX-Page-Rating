@@ -1,0 +1,40 @@
+<aura:component access="GLOBAL" implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" controller="sharinpix_free.ImageController">
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="label" type="String" access="global"/>
+    <aura:attribute name="uploaderId" type="String"/>
+    <aura:attribute name="uploading" type="Boolean"/>
+    <aura:attribute name="done" type="Boolean"/>
+    <aura:attribute name="n_uploading" type="Integer"/>
+    <aura:attribute name="n_uploaded" type="Integer"/>
+    <aura:attribute name="progress" type="Integer"/>
+    <aura:attribute name="filenamePrefix" type="string" access="global"/>
+    <aura:attribute name="eventIdentifier" type="string" access="global" />
+    <aura:attribute name="multiple" type="Boolean" access="global" />
+    <aura:attribute name="uploadChoice" type="string" access="global" />
+    <aura:attribute name="siteUrl" type="string" />
+
+    <aura:attribute name="loaded" type="Boolean" />
+
+    <aura:registerEvent name="Uploaded" type="sharinpix_free:Uploaded"/>
+    <aura:registerEvent name="ErrorHandling" type="sharinpix_free:ErrorHandling"/>
+
+    <aura:attribute name="iframeUrl" type="string" />
+
+    <aura:if isTrue="{! v.uploadChoice == 'Files (Beta)' }">
+        <div class="file-native-upload">
+            <lightning:fileUpload label="Upload image(s)" multiple="{! v.multiple }" accept=".jpg, .jpeg, .png" recordId="{! v.recordId }" onuploadfinished="{! c.handleUploadFinished }" class="standard-component">
+            </lightning:fileUpload>
+        </div>
+    <aura:set attribute="else">
+        <div aura:id="uploader" class="uploader-container">
+            <label for="{!v.uploaderId}" title="Upload">
+                <lightning:icon iconName="utility:upload" size="x-small" alternativeText="Upload Images"/>
+                <div class="progress" style="{! 'height: ' + v.progress+'%;' }"></div>
+            </label>
+            <input id="{!v.uploaderId}" type="file" name="file" class="file" aura:id="file" onchange="{!c.fileInputChange}" multiple="{! v.multiple }" accept="image/*"/>
+            <iframe aura:id="upload-iframe" src="{! v.iframeUrl }" style="display: none;" />
+        </div>
+    </aura:set>
+    </aura:if>
+</aura:component>

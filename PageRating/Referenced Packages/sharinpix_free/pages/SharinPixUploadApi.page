@@ -1,0 +1,158 @@
+<apex:page docType="html-5.0" cache="true" sidebar="false" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" >
+  <head>
+    <title>SharinPixUploadApi</title>
+    <apex:includeScript value="{!$Resource.sharinpix_free__jquery}"/>
+    <script>
+      var MAX_SIZE = 25000000;
+      var API_VERSION = 'v38.0';
+      var broadcastMessage = function(payload){
+        window.parent.postMessage(payload, '*');
+      }
+
+      jQuery(document).ready(function($) {
+        window.addEventListener('message',function(event) {
+          if (event.data.name == 'new-upload'){
+            uploadImages(event.data, event.data.eventIdentifier);
+          }
+        },false);
+
+        var orgId = '{!$Organization.Id}'.substring(0, 15);
+
+        var sessionId = '{!$Api.Session_ID}';
+        if (sessionId.includes(orgId)){
+          $.ajax({
+            url: "/services/data/"+ API_VERSION + "/sobjects",
+            headers: {'Authorization': 'Bearer {!$Api.Session_ID}', 'Content-Type': 'application/json'},
+            success: function(response) {
+              broadcastMessage({name: 'loaded', eventIdentifier: '{!$CurrentPage.parameters.eventIdentifier}'});
+            },
+            error: function(errorObj, errorMessage, errorThrown){
+              console.log('errorObj: ', errorObj.responseJSON);
+            }
+          });
+        }
+
+        var uploading = 0;
+        var uploaded = 0;
+
+        var uploadImages = function(payload, eventIdentifier){
+          for (var i = 0; i < payload.files.length; i++) {
+            if (payload.files[i].size > MAX_SIZE){
+              broadcastMessage({name: 'error', message: '[{"message": "File size cannot exceed ' + MAX_SIZE + ' bytes. ' +
+                'Selected file size: ' + payload.files[i].size + '."}]', eventIdentifier: eventIdentifier});
+              continue;
+            }
+            uploading += 1;
+
+            uploadImage(payload.files[i], payload.recordId, eventIdentifier, payload.prefix, payload.fileType, handleCallback);
+          }
+        }
+
+        var uploadImage = function(file, parentId, eventIdentifier, prefix, fileType, callback){
+          filetoBase64(file, function(err, content){
+            var body = {}
+            if (fileType === 'ContentDocument') {
+              var body = {
+                compositeRequest: [
+                  {
+                    method: "POST",
+                    url: "/services/data/"+ API_VERSION + "/sobjects/ContentVersion",
+                    referenceId: "refVersion",
+                    body: {
+                      PathOnClient: (prefix == undefined ? '' : prefix) + file.name,
+                      Versiondata: content,
+                      Title: (prefix == undefined ? '' : prefix) + file.name
+                    }
+                  },
+                  {
+                    method: "GET",
+                    url: "/services/data/"+ API_VERSION + "/sobjects/ContentVersion/@{refVersion.id}/",
+                    referenceId: "refVersionGet"
+                  },
+                  {
+                    method: "POST",
+                    url: "/services/data/"+ API_VERSION + "/sobjects/ContentDocumentLink",
+                    referenceId: "refLink",
+                    body: {
+                      LinkedEntityId: parentId,
+                      ContentDocumentId: "@{refVersionGet.ContentDocumentId}",
+                      ShareType: "V",
+                      Visibility: "AllUsers"
+                    }
+                  }
+                ]
+              };
+            }
+            else if (fileType === 'Attachment') {
+              var body = {
+                compositeRequest: [
+                  {
+                    method: "POST",
+                    url: '/services/data/'+ API_VERSION + '/sobjects/Attachment',
+                    referenceId: "refVersion",
+                    body: {
+                      parentId: parentId,
+                      Body: content,
+                      Name: (prefix == undefined ? '' : prefix) + file.name,
+                      ContentType: file.type
+                    }
+                  }
+                ]
+              };
+            }
+
+            $.ajax({
+              url: '/services/data/'+ API_VERSION + '/composite',
+              data: JSON.stringify(body),
+              type: 'POST',
+              processData: false,
+              contentType: false,
+              headers: {'Authorization': 'Bearer {!$Api.Session_ID}', 'Content-Type': 'application/json'},
+              xhr: function(){
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt){
+                  if (evt.lengthComputable) {
+                    broadcastMessage({name: 'uploading', percent: 30 + Math.round(uploaded/uploading * 70), eventIdentifier: eventIdentifier});
+                  }
+                }, false);
+                return xhr;
+              },
+              success: function(response) {
+                callback(null, true, eventIdentifier)
+              },
+              error: function(errorObj, errorMessage, errorThrown){
+                callback(errorObj.responseText, false, eventIdentifier);
+              }
+            });
+          });
+        };
+
+        var filetoBase64 = function(file, callback){
+          var reader = new FileReader();
+          reader.onload = function() {
+            var fileContents = reader.result;
+            var base64Mark = 'base64,';
+            var dataStart = fileContents.indexOf(base64Mark) + base64Mark.length;
+            fileContents = fileContents.substring(dataStart);
+            callback(null, fileContents);
+          }
+          reader.readAsDataURL(file);
+        }
+
+        var handleCallback = function(err, res, eventIdentifier){
+          if (res === true){
+            uploaded += 1;
+            if (uploading === uploaded){
+              broadcastMessage({name: 'uploaded', eventIdentifier: eventIdentifier});
+            }
+          }
+          if (err != null){
+            broadcastMessage({name: 'error', message: err, eventIdentifier: eventIdentifier});
+          }
+        }
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</apex:page>

@@ -1,0 +1,29 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="RecordPageRatingController">
+    <aura:attribute name="pageName" type="String" />
+    <aura:attribute name="overallRatingMessage" type="Aura.component[]" description="Placeholder to show overall rating message of the page"/>
+    <aura:attribute name="overallRatingValue" type="Aura.component[]" description="Placeholder to show overall rating value of the page"/>
+    <aura:attribute name="addRating" type="Aura.component[]" description="Placeholder to show component for adding new rating"/>
+
+    <aura:attribute name="recordPageId" type="String" access="private"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:newPageRatingEvent" action="{!c.handlePageEvent}"/>
+    
+    <lightning:card iconName="custom:custom11">
+        <aura:set attribute="title">
+        	<span style="font-weight: 700;">Rate This Page</span>
+        </aura:set>
+        <aura:set attribute="actions">
+            <lightning:buttonIcon iconName="utility:add" alternativeText="Click to add a rating for this page" size="small" onclick="{!c.initAddRating}"/>
+        </aura:set>
+        <p class="slds-p-horizontal_small slds-align_absolute-center">
+            <div class="slds-align-bottom">
+                <span class="slds-m-right_small">{!v.overallRatingMessage}</span>{!v.overallRatingValue}
+            </div>
+        </p>
+        <div class="slds-m-around_small">
+            {!v.addRating}
+        </div>
+    </lightning:card>
+    
+</aura:component>

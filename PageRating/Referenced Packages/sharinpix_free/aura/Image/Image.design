@@ -1,0 +1,8 @@
+<design:component label="Images">
+  <design:attribute name="recordId" label="Record Id" description="Enter the record id. Leave blank to use current record"/>
+  <design:attribute name="height" label="Height" description="Enter height of the container" default=""/>
+  <design:attribute name="interval" label="Interval" description="Interval (in milliseconds) between image change" default="0"/>
+  <design:attribute name="prefix" label="Prefix" description="Add a prefix to the component" default=""/>
+  <design:attribute name="multiple" label="Multiple upload" description="This option will overwrite the existing image during upload" default="true" />
+  <design:attribute name="uploadChoice" label="Type of upload" description="Choose how to save the uploaded images" datasource="Attachment, ContentDocument, Files (Beta)" default="ContentDocument"  />
+</design:component>

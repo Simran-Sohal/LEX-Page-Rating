@@ -1,0 +1,74 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" controller="sharinpix_free.ImageController">
+  <aura:attribute name="recordId" type="String" access="global"/>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="errorMessage" type="String"/>
+  <aura:dependency resource="ui:message"/>
+  <aura:attribute name="images" type="Object[]"/>
+  <aura:attribute name="image" type="Object"/>
+  <aura:attribute name="index" type="Integer"/>
+  <aura:attribute name="total" type="Integer"/>
+  <aura:attribute name="displayButtons" type="Boolean"/>
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+  <aura:handler event="aura:locationChange" action="{! c.doReload }"/>
+  <aura:handler name="change" value="{! v.recordId }" action="{! c.doReload }"/>
+  <aura:method name="reload" action="{! c.doReload }"/>
+  <aura:handler event="sharinpix_free:Uploaded" action="{!c.uploaded}"/>
+  <aura:handler event="sharinpix_free:ErrorHandling" action="{!c.displayError}"/>
+  <aura:attribute name="height" type="integer" access="global" />
+  <aura:attribute name="interval" type="integer" access="global" />
+  <aura:attribute name="intervalInstance" type="Object"/>
+  <aura:attribute name="prefix" type="string" access="global"/>
+  <aura:attribute name="multiple" type="Boolean" access="global" />
+  <aura:attribute name="uploadChoice" type="string" access="global" />
+
+  <aura:if isTrue="{! !empty(v.errorMessage) }">
+    <span>
+      <ui:message title="Error" severity="Error" class="errormessages">
+        {! v.errorMessage }
+      </ui:message>
+    </span>
+  </aura:if>
+  <div class="image-container hide-buttons" aura:id="image-container">
+    <aura:if isTrue="{! v.loading == true }">
+      <lightning:spinner alternativeText="Loading in progress" />
+    <aura:set attribute="else">
+
+      <aura:if isTrue="{! v.total > 0 }">
+        <sharinpix_free:SingleImage attachmentId="{!v.image.Id}" height="{!v.height}"/>
+      <aura:set attribute="else">
+        <div class="img-placeholder"></div>
+        <div class="uploader-no-images-btn sharinpix-buttons">
+          <sharinpix_free:Uploader recordId="{!v.recordId}" filenamePrefix="{! v.prefix }" label="Upload Images" eventIdentifier="{! globalId }" multiple="{! v.multiple }" uploadChoice="{! v.uploadChoice }" />
+          <p>No image</p>
+        </div>
+      </aura:set>
+      </aura:if>
+      <aura:if isTrue="{! v.total > 0 }">
+        <div class="toggle-area" onclick="{!c.toggle}"></div>
+      </aura:if>
+      <aura:if isTrue="{! v.total > 1 }">
+        <button aura:id="sharinpix-control-buttons" class="control control-previous" label="Previous" onclick="{! c.doPrevious }">
+          <lightning:icon iconName="utility:chevronleft" size="large" alternativeText="Previous Image"/>
+        </button>
+        <button aura:id="sharinpix-control-buttons" class="control control-next" label="Next" onclick="{! c.doNext }">
+          <lightning:icon iconName="utility:chevronright" size="large" alternativeText="Next Image"/>
+        </button>
+      </aura:if>
+      <aura:if isTrue="{! v.total > 0 &amp;&amp; v.displayButtons }">
+        <div class="button-container" aura:id="sharinpix-action-buttons">
+          <aura:if isTrue="{! v.multiple }">
+            <div class="uploader-btn">
+              <sharinpix_free:Uploader recordId="{!v.recordId}" filenamePrefix="{! v.prefix }"  eventIdentifier="{! globalId }" multiple="{! v.multiple }" uploadChoice="{! v.uploadChoice }" />
+            </div>
+          </aura:if>
+          <div class="delete-btn" onclick="{! c.doDelete }">
+            <label title="Delete">
+              <lightning:icon iconName="utility:delete" size="x-small" alternativeText="Delete"/>
+            </label>
+          </div>
+        </div>
+      </aura:if>
+    </aura:set>
+    </aura:if>
+  </div>
+</aura:component>

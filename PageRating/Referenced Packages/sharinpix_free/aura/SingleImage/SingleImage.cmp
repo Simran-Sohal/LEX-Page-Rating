@@ -1,0 +1,44 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" controller="sharinpix_free.ImageController">
+    <aura:attribute name="attachmentId" type="String" access="global"/>
+    <aura:attribute name="source" type="String" access="global" default="" />
+    <aura:attribute name="height" type="integer" access="global" />
+    <aura:attribute name="loading" type="Boolean" default="false" />
+
+    <aura:attribute name="urlField" type="string" access="global"/>
+    <aura:attribute name="text" type="String" access="global"/>
+    <aura:attribute name="linkText" type="String" access="global"/>
+    <aura:attribute name="verticalAlign" type="String" access="global"/>
+    <aura:attribute name="textSize" type="String" access="global"/>
+    <aura:attribute name="color" type="String" access="global"/>
+    <aura:attribute name="siteUrl" type="string" />
+
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+    <aura:registerEvent name="ImageDeleted" type="sharinpix_free:ImageDeleted"/>
+    <aura:attribute name="style" type="string" access="global" />
+    <aura:handler name="change" value="{! v.attachmentId }" action="{! c.doReload }"/>
+
+    <div class="container" style="{! v.style }">
+        <aura:if isTrue="{! !empty(v.source) }">
+            <img src="{! v.source }" alt="image" />
+        </aura:if>
+
+        <aura:if isTrue="{! empty(v.source) }">
+            <div class="img-placeholder"></div>
+            <div class="no-image">
+                No image
+            </div>
+        </aura:if>
+
+        <aura:if isTrue="{! !empty(v.attachmentId) &amp;&amp; v.loading }">
+            <lightning:spinner alternativeText="loading in progress" />
+        </aura:if>
+        <div class="{!v.verticalAlign + ' ' + V.textSize}">
+            <aura:if isTrue="{! !empty(v.linkText)}">
+                <p><a class="{!v.color}" href="{!v.linkText}" target="_blank">{! !empty(v.text) ? v.text : v.linkText }</a></p>
+            <aura:set attribute="else">
+                <p class="{!v.color}">{!v.text}</p>
+            </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

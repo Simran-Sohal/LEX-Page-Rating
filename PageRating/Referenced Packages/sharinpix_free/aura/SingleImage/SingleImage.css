@@ -1,0 +1,120 @@
+.THIS {
+	position: relative;
+}
+.THIS .info{
+	position: absolute;
+	background: rgba(255, 255, 255, 0.5);
+}
+.THIS.container {
+  	text-align: center;
+}
+.THIS.container img{
+	min-width: 50px;
+	min-height: 50px;
+	background: #b0b0b0;
+	max-width: 100%;
+  	max-height: 100%;
+  	vertical-align: middle;
+}
+
+.THIS .img-placeholder{
+	min-width: 50px;
+	min-height: 180px;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: rgba(0, 105, 144, 0.4);
+}
+.THIS .img-placeholder:before, 
+.THIS .img-placeholder:after{
+	position: absolute;
+	content: "";
+	display: block;
+	background: rgba(255, 255, 255, 0.5);
+}
+.THIS .img-placeholder:before {
+	top: 5%;
+	padding-bottom: 20%;
+	width: 20%;
+	left: 5%;
+	border-radius: 100%;
+}
+.THIS .img-placeholder:after {
+	-webkit-transform: translateY(20%) rotate(-45deg);
+	-moz-transform: translateY(20%) rotate(-45deg);
+	-ms-transform: translateY(20%) rotate(-45deg);
+	-o-transform: translateY(20%) rotate(-45deg);
+	transform: translateY(20%) rotate(-45deg);
+	-webkit-transform-origin: right 50%;
+	-moz-transform-origin: right 50%;
+	-ms-transform-origin: right 50%;
+	-o-transform-origin: right 50%;
+	transform-origin: right 50%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 300%;
+}
+.THIS .no-image{
+	position: absolute;
+    top: 0;
+    margin: 0 auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+.THIS .top {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	line-height: 1.5em;
+}
+.THIS .bottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	line-height: 1.5em;
+}
+.THIS .middle {
+	position: absolute;
+	top: 45%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	line-height: 1.5em;
+}
+.THIS .small {
+	font-size: small;
+	font-weight: bold;
+}
+.THIS .medium {
+	font-size: medium;
+	font-weight: bold;
+}
+.THIS .large {
+	font-size: large;
+	font-weight: bold;
+}
+.THIS .red {
+	color: #c23934;
+}
+.THIS .blue {
+	color: #0070d2;
+}
+.THIS .yellow {
+	color: #fff03f;
+}
+.THIS .green {
+	color: #028048;
+}
+.THIS .white {
+	color: #fff;
+}
+.THIS .black {
+	color: #000;
+}

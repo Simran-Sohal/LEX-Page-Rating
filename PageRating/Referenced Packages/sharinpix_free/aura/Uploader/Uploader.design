@@ -1,0 +1,7 @@
+<design:component label="Upload Files">
+  <design:attribute name="recordId" label="RecordId" description="Enter the RecordId or leave unchanged to use the record Id" />
+  <design:attribute name="label" label="label" description="Enter the button label" default="Upload"/>
+  <design:attribute name="filenamePrefix" label="Filename prefix" description="Enter a prefix for the uploaded images" default="sharinpix"/>
+  <design:attribute name="multiple" label="Multiple upload" description="Use component to display only a single image" default="true" />
+  <design:attribute name="uploadChoice" label="Type of upload" description="Choose how to save the uploaded images" datasource="Attachment, ContentDocument, Files (Beta)" default="ContentDocument" />
+</design:component>

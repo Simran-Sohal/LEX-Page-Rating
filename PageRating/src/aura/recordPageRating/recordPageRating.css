@@ -1,0 +1,14 @@
+.THIS {
+}
+.THIS .success-text-color{
+    color: green !important;
+    font-weight: 400;
+}
+.THIS .warning-text-color{
+    color: orange !important;
+    font-weight: 400;
+}
+.THIS .error-text-color{
+    color: red !important;
+    font-weight: 400;
+}

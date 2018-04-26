@@ -1,0 +1,31 @@
+<aura:component controller="RecordPageRatingController">
+    <aura:attribute name="recordPageId" type="String" />
+    <aura:attribute name="rating" type="String" default="5"/>
+    <aura:attribute name="comments" type="String" />
+    <aura:attribute name="ratingValues" type="String[]" default="5,4,3,2,1"/>
+    
+    <aura:registerEvent name="newPageRatingEvt" type="c:newPageRatingEvent"/>
+    
+    <div class="slds-box">
+        <lightning:layout class="slds-wrap">
+            <lightning:layoutItem class="slds-m-bottom_small" size="12">
+                <lightning:select label="Rating" required="true" value="{!v.rating}" >
+                    <aura:iteration items="{!v.ratingValues}" var="ratingVal">
+                        <option value="{!ratingVal}" text="{!ratingVal}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <lightning:layoutItem class="slds-m-bottom_small" size="12">
+                <lightning:textarea label="Comments" maxlength="255" required="true" 
+                                    value="{!v.comments}" placeholder="Enter you comments."/>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12">
+                <div class="slds-align_absolute-center">
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.onCancel}" />
+                    <lightning:button variant="brand" label="Submit" onclick="{!c.onSubmit}" />
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+    
+</aura:component>

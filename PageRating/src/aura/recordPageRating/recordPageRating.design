@@ -1,0 +1,3 @@
+<design:component label="Record Page Rating">
+    <design:attribute name="pageName" label="Page Developer Name" required="true" description="Enter the developer name of this lightning page"/>
+</design:component>

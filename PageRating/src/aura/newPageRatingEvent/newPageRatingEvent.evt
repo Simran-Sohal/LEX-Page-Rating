@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="New Record Page Rating Event">
+    <aura:attribute name="recordPageId" type="String" required="true" description="Id of the record page for which the event is raised"/>
+    <aura:attribute name="action" type="String" required="true" description="Possible values : SUBMIT, CANCEL"/>
+</aura:event>
